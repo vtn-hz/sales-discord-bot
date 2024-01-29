@@ -1,0 +1,27 @@
+{
+  "name": "sales-discord-bot",
+  "version": "1.0.0",
+  "description": "Discord sales bot",
+  "main": "app.js",
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node",
+    "dev": "npx nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vtn-hz/sales-discord-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vtn-hz/sales-discord-bot/issues"
+  },
+  "homepage": "https://github.com/vtn-hz/sales-discord-bot#readme"
+}
