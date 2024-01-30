@@ -2,7 +2,7 @@
   "name": "sales-discord-bot",
   "version": "1.0.0",
   "description": "Discord sales bot",
-  "main": "app.js",
+  "main": "src/app.js",
   "dependencies": {
     "discord.js": "^14.14.1"
   },
