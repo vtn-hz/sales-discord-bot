@@ -7,6 +7,8 @@ const {
 const { token } = require('./etc/config.json');
 const commands  = require ('./commands/register');
 
+const messageCreate = require('./handlers/messageCreate');
+
 
 const client = new Client({
     intents: [
@@ -24,19 +26,7 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 
-client.on('messageCreate', async (message) => {
-	if (message.reference) {
-		const channel = client.channels.cache.get(message.reference.channelId);
-		const messageRef = await channel.messages.fetch(message.reference.messageId);
-		messageRef.react("💰")
-		messageRef.react("🪙")
-		messageRef.react("💵")
-
-		console.log();
-	}
-
-    //console.log(`Mensaje recibido: ${message.content}`);
-});
+client.on(Events.MessageCreate, (message) => { messageCreate (message, client) });
 
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -61,3 +51,4 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.login(token);
+
