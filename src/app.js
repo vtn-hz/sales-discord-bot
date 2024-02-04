@@ -1,10 +1,13 @@
-const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
-const { token, clientId, guildId  } = require('./etc/config.json');
-const { REST, Routes } = require('discord.js');
+const { 
+	Client, 
+	Events, 
+	GatewayIntentBits
+} = require('discord.js');
 
-const ping  = require ('./commands/util/ping.js')
+const { token } = require('./etc/config.json');
+const commands  = require ('./commands/register');
 
-const rest = new REST().setToken(token);
+
 const client = new Client({
     intents: [
       GatewayIntentBits.Guilds,
@@ -13,40 +16,28 @@ const client = new Client({
     ]
 });
 
+commands.register(client);
 
-client.commands = new Collection ();
-client.commands.set(ping.data.name, ping);
-
-
-const commands = [];
-commands.push(ping.data.toJSON());
-// When the client is ready, run this code (only once)
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 
 });
 
 
-client.on('messageCreate', (message) => {
-    console.log(`Mensaje recibido: ${message.content}`);
+client.on('messageCreate', async (message) => {
+	if (message.reference) {
+		const channel = client.channels.cache.get(message.reference.channelId);
+		const messageRef = await channel.messages.fetch(message.reference.messageId);
+		messageRef.react("💰")
+		messageRef.react("🪙")
+		messageRef.react("💵")
+
+		console.log();
+	}
+
+    //console.log(`Mensaje recibido: ${message.content}`);
 });
 
-(async () => {
-	try {
-		console.log(`Started refreshing ${commands.length} application (/) commands.`);
-
-		// The put method is used to fully refresh all commands in the guild with the current set
-		const data = await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands },
-		);
-
-		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
-	} catch (error) {
-		// And of course, make sure you catch and log any errors!
-		console.error(error);
-	}
-})();
 
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
@@ -69,7 +60,4 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 });
 
-client.login(token);
-
-// Log in to Discord with your client's token
 client.login(token);
